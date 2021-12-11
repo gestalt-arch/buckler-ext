@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/cc  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/lidar.dir/ydlidar_x2_test.c.o CMakeFiles/lidar.dir/ydlidar_x2.c.o -o lidar 

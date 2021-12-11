@@ -1,12 +1,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "app_error.h"
-#include "nrf.h"
-#include "nrf_delay.h"
-#include "nrf_drv_timer.h"
-#include "nrf_twi_mngr.h"
-
 #define MAX_SAMPLES 256
 #define RESOLUTION 429
 typedef struct {
@@ -25,11 +19,13 @@ typedef struct {
     uint8_t LSA_MSB;
     uint8_t CS_LSB;
     uint8_t CS_MSB;
-    uint8_t Si_LSB[MAX_SAMPLES];
-    uint8_t Si_MSB[MAX_SAMPLES];
+    uint8_t Si[MAX_SAMPLES * 2];
 } lidar_struct;
 
-float to_distance(float SI);
-
+void parse_distance();
+void parse_theta();
+void parse_lidar(uint8_t* lidar_data);
+void update_data();
+YdLidarData_t* get_lidar_data(uint8_t* lidar_data);
 
 
