@@ -1,3 +1,0 @@
-/Users/johnreese/Desktop/Classes/EECS149/gestalt-arch/firmware/buckler-ext/software/libraries/ydlidar_x2/build/CMakeFiles/rebuild_cache.dir
-/Users/johnreese/Desktop/Classes/EECS149/gestalt-arch/firmware/buckler-ext/software/libraries/ydlidar_x2/build/CMakeFiles/edit_cache.dir
-/Users/johnreese/Desktop/Classes/EECS149/gestalt-arch/firmware/buckler-ext/software/libraries/ydlidar_x2/build/CMakeFiles/lidar.dir
