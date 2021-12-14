@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define MAX_SAMPLES 256
+#define MAX_SAMPLES 40
 #define MAX_RESOLUTION 429
 typedef struct {
     float theta[MAX_RESOLUTION];
