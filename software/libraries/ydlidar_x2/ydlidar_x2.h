@@ -26,6 +26,4 @@ void parse_distance();
 void parse_theta();
 void parse_lidar(uint8_t* lidar_data);
 void update_data();
-YdLidarData_t* get_lidar_data(uint8_t* lidar_data);
-
 
