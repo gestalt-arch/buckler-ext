@@ -2,10 +2,10 @@
 #include <stdint.h>
 
 #define MAX_SAMPLES 256
-#define RESOLUTION 429
+#define MAX_RESOLUTION 429
 typedef struct {
-    float theta[RESOLUTION];
-    float distance[RESOLUTION];
+    float theta[MAX_RESOLUTION];
+    float distance[MAX_RESOLUTION];
 } YdLidarData_t;
 
 typedef struct {

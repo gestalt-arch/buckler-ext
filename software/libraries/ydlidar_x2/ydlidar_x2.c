@@ -2,7 +2,7 @@
 #include <math.h>
 
 #define DEG_TO_RAD 0.0174533
-#define INDEX (i + index) % RESOLUTION
+#define INDEX (i + index) % MAX_RESOLUTION
 
 static YdLidarData_t data;
 static lidar_struct data_struct;
@@ -23,8 +23,8 @@ void parse_theta() {
     float theta_FSA = (FSA >> 1) / 64;
     float theta_LSA = (LSA >> 1) / 64;
 
-    data.theta[(index) % RESOLUTION] = theta_FSA;
-    data.theta[(index + data_struct.LS - 1) % RESOLUTION] = theta_LSA;
+    data.theta[(index) % MAX_RESOLUTION] = theta_FSA;
+    data.theta[(index + data_struct.LS - 1) % MAX_RESOLUTION] = theta_LSA;
 
     float theta_dif = theta_FSA - theta_LSA;
 
