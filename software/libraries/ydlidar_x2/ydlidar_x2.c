@@ -4,41 +4,40 @@
 #define DEG_TO_RAD 0.0174533
 #define INDEX (i + index) % MAX_RESOLUTION
 
-static YdLidarData_t data;
 static lidar_struct data_struct;
 static unsigned int index = 0;
 
-void parse_distance() {
+void parse_distance(YdLidarData_t* lidar) {
     uint8_t* read_ptr = data_struct.Si;
     for (int i = 0; i < data_struct.LS; i++) {
-        data.distance[INDEX] = (float)(read_ptr[1] << 8 | read_ptr[0]) / 4.f;
+        lidar->distance[INDEX] = (float)(read_ptr[1] << 8 | read_ptr[0]) / 4.f;
         read_ptr += 2 * sizeof(uint8_t);
     } 
 }
  
-void parse_theta() {
+void parse_theta(YdLidarData_t* lidar) {
     uint16_t FSA = (float)(data_struct.FSA_MSB << 8 | data_struct.FSA_LSB);
     uint16_t LSA = (float)(data_struct.LSA_MSB << 8 | data_struct.LSA_LSB);
 
     float theta_FSA = (FSA >> 1) / 64;
     float theta_LSA = (LSA >> 1) / 64;
 
-    data.theta[(index) % MAX_RESOLUTION] = theta_FSA;
-    data.theta[(index + data_struct.LS - 1) % MAX_RESOLUTION] = theta_LSA;
+    lidar->theta[(index) % MAX_RESOLUTION] = theta_FSA;
+    lidar->theta[(index + data_struct.LS - 1) % MAX_RESOLUTION] = theta_LSA;
 
     float theta_dif = theta_FSA - theta_LSA;
 
     for (int i = 2; i < data_struct.LS - 1; i++) {
-        data.theta[INDEX] = theta_dif / (data_struct.LS - 1) * (i - 1) + theta_FSA;
+        lidar->theta[INDEX] = theta_dif / (data_struct.LS - 1) * (i - 1) + theta_FSA;
     }
 
     for (int i = 0; i < data_struct.LS; i++) {
-        float distance = data.distance[INDEX];
-        data.theta[INDEX] += atanf((21.8 * (155.3 - distance) / (155.3 * distance)) * DEG_TO_RAD);
+        float distance = lidar->distance[INDEX];
+        lidar->theta[INDEX] += atanf((21.8 * (155.3 - distance) / (155.3 * distance)) * DEG_TO_RAD);
     }
 }
 
-void parse_lidar(uint8_t* lidar_data) {
+void parse_lidar(uint8_t* lidar_data, YdLidarData_t* lidar) {
     data_struct.PH_LSB = lidar_data[0];
     data_struct.PH_MSB = lidar_data[1];
     data_struct.CT = lidar_data[2];
@@ -54,15 +53,14 @@ void parse_lidar(uint8_t* lidar_data) {
     }
 }
 
-void update_data() {
-    parse_distance();
-    parse_theta();
+void update_data(YdLidarData_t* lidar) {
+    parse_distance(lidar);
+    parse_theta(lidar);
     index += data_struct.LS;
 }
 
-YdLidarData_t* get_lidar_data(uint8_t* lidar_data) {
+void get_lidar_data(uint8_t* lidar_data, YdLidarData_t* lidar) {
     //u_int8_t lidar_data[522]; //= get_data from ic2
-    parse_lidar(lidar_data);
-    update_data();
-    return &data;
+    parse_lidar(lidar_data, lidar);
+    update_data(lidar);
 }

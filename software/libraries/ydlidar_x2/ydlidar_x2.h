@@ -24,6 +24,6 @@ typedef struct {
 
 void parse_distance();
 void parse_theta();
-void parse_lidar(uint8_t* lidar_data);
+void parse_lidar(uint8_t* lidar_data, YdLidarData_t * lidar);
 void update_data();
 
