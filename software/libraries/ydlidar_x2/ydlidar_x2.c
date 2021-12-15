@@ -1,5 +1,6 @@
 #include "ydlidar_x2.h"
 #include <math.h>
+#include <stdio.h>
 
 #define DEG_TO_RAD 0.0174533
 
