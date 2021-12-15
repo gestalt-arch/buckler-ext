@@ -2,7 +2,7 @@
 #include <math.h>
 
 #define DEG_TO_RAD 0.0174533
-#define INDEX (i + index) % MAX_RESOLUTION
+
 
 static lidar_struct data_struct;
 static unsigned int index = 0;
@@ -10,7 +10,7 @@ static unsigned int index = 0;
 void parse_distance(YdLidarData_t* lidar) {
     uint8_t* read_ptr = data_struct.Si;
     for (int i = 0; i < data_struct.LS; i++) {
-        lidar->distance[INDEX] = (float)(read_ptr[1] << 8 | read_ptr[0]) / 4.f;
+        lidar->distance[(i + index) % MAX_RESOLUTION] = (float)(read_ptr[1] << 8 | read_ptr[0]) / 4.f;
         read_ptr += 2 * sizeof(uint8_t);
     } 
 }
@@ -22,18 +22,22 @@ void parse_theta(YdLidarData_t* lidar) {
     float theta_FSA = (FSA >> 1) / 64.f;
     float theta_LSA = (LSA >> 1) / 64.f;
 
+    printf("Theta FSA: %f \n", theta_FSA);
+    printf("Theta LSA: %f \n", theta_LSA);
+
+
     lidar->theta[(index) % MAX_RESOLUTION] = theta_FSA;
     lidar->theta[(index + data_struct.LS - 1) % MAX_RESOLUTION] = theta_LSA;
 
     float theta_dif = theta_LSA - theta_FSA;
 
     for (int i = 1; i < data_struct.LS - 1; i++) {
-        lidar->theta[INDEX] = (theta_dif / (data_struct.LS - 1)) * (i - 1) + theta_FSA;
+        lidar->theta[(i + index) % MAX_RESOLUTION] = (theta_dif / (data_struct.LS - 1)) * (i - 1) + theta_FSA;
     }
 
     for (int i = 0; i < data_struct.LS; i++) {
-        float distance = lidar->distance[INDEX];
-        lidar->theta[INDEX] += (distance == 0) ? 0 : atanf((21.8 * (155.3 - distance) / (155.3 * distance)) * DEG_TO_RAD);
+        float distance = lidar->distance[(i + index) % MAX_RESOLUTION];
+        lidar->theta[(i + index) % MAX_RESOLUTION] += (distance == 0) ? 0 : atanf((21.8 * (155.3 - distance) / (155.3 * distance)) * DEG_TO_RAD);
     }
 }
 
