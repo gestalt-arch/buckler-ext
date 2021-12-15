@@ -27,7 +27,7 @@ void parse_theta(YdLidarData_t* lidar) {
 
     float theta_dif = -theta_FSA + theta_LSA;
 
-    for (int i = 2; i < data_struct.LS - 1; i++) {
+    for (int i = 1; i < data_struct.LS; i++) {
         lidar->theta[INDEX] = theta_dif / (data_struct.LS - 1) * (i - 1) + theta_FSA;
     }
 
