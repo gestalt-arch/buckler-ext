@@ -32,11 +32,11 @@ void parse_theta(YdLidarData_t* lidar) {
 
     float theta_dif = theta_LSA - theta_FSA;
 
-    for (int i = 1; i < data_struct.LS - 1; i++) {
+    for (int i = 2; i < data_struct.LS - 1; i++) {
         lidar->theta[(i + index) % MAX_RESOLUTION] = (theta_dif / (data_struct.LS - 1)) * (i - 1) + theta_FSA;
     }
 
-    for (int i = 0; i < data_struct.LS; i++) {
+    for (int i = 1; i < data_struct.LS; i++) {
         float distance = lidar->distance[(i + index) % MAX_RESOLUTION];
         lidar->theta[(i + index) % MAX_RESOLUTION] += (distance == 0) ? 0 : atanf((21.8 * (155.3 - distance) / (155.3 * distance)) * DEG_TO_RAD);
     }
