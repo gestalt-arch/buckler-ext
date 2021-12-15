@@ -11,7 +11,7 @@ void parse_distance(YdLidarData_t* lidar) {
     uint8_t* read_ptr = data_struct.Si;
     for (int i = 0; i < data_struct.LS; i++) {
         lidar->distance[INDEX] = (float)(read_ptr[1] << 8 | read_ptr[0]) / 4.f;
-        read_ptr += 2 * sizeof(uint8_t);
+        read_ptr += 2;
     } 
 }
  
